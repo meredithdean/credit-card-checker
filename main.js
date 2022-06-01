@@ -24,7 +24,81 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 
 
 // Add your functions below:
+validateCred = numArr => {
+    let total = 0;
+    for (let i = numArr.length - 1; i>= 0; i--) {
+      let currValue = numArr[i]
+      if((numArr.length -1 - i) % 2 === 1) {
+        currValue *= 2;
+        if (currValue > 9) {
+          currValue -= 9;
+        }
+      }
+      total += currValue;
+    }
+    return total % 10 === 0;
+  };
 
+  // Test functions:
+console.log(validateCred(valid1)); // Should print true
+console.log(validateCred(invalid1)); // Should print false
+  
+  // finding invalid cards
+  const findInvalidCards = cards => {
+    const invalidCards = [];
+  
+    for (let i = 0; i < cards.length; i++) {
+      let currCred = cards[i];
+      if (!validateCred(currCred)) {
+        invalidCards.push(currCred);
+      }
+    }
+    return invalidCards;
+  };
+
+  // Test function
+console.log(findInvalidCards([valid1, valid2, valid3, valid4, valid5]));// Shouldn't print anything
+console.log(findInvalidCards([invalid1, invalid2, invalid3, invalid4, invalid5])); // Should print all of the numbers
+
+console.log(findInvalidCards(batch)); // Test what the mystery numbers are
+  
+  //invalid card companies
+  const idInvalidCardCompanies = invalidBatch => {
+    let cardCompanies = [];
+    for (let i = 0; i < invalidBatch.length; i++) {
+      switch(invalidBatch[i][0]) {
+        case 3: 
+          if (cardCompanies.indexOf('Amex (American Express)') === -1) {
+            cardCompanies.push('Amex (American Express)');
+          }
+          break
+        case 4: 
+          if (cardCompanies.indexOf('Visa') === -1) {
+            cardCompanies.push('Visa');
+          }
+          break
+        case 5: 
+          if (cardCompanies.indexOf('Mastercard') === -1) {
+            cardCompanies.push('Mastercard');
+          }
+          break
+        case 6: 
+          if (cardCompanies.indexOf('Discover') === -1) {
+            cardCompanies.push('Discover');
+          }
+          break
+        default:
+        console.log('Company not found');
+        break;
+      }
+    }
+    return cardCompanies;
+  };
+  
+
+  console.log(idInvalidCardCompanies([invalid1])); // Should print['visa']
+console.log(idInvalidCardCompanies([invalid2])); // Should print ['mastercard']
+console.log(idInvalidCardCompanies(batch)); // Find out which companies have mailed out invalid cards
 
 
 
